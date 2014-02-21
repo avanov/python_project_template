@@ -1,0 +1,8 @@
+{
+    "project_name": "myproject",
+    "project_description": "Short description",
+    "project_url": "https://github.com/avanov",
+    "project_version": "0.0.1",
+    "author": "Maxim Avanov",
+    "author_email": "maxim.avanov@gmail.com"
+}
