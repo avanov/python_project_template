@@ -3,6 +3,7 @@
 .py[co]
 .doit.db
 .idea/
+.local/
 
 build/
 dist/

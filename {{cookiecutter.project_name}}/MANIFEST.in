@@ -1,2 +1,6 @@
-include *.txt *.ini *.cfg *.rst *.json
-recursive-include {{ cookiecutter.project_name }} *.ico *.png *.css *.gif *.jpg *.txt *.js *.html *.xml
+# https://docs.python.org/3/distutils/sourcedist.html#manifest
+include README.rst CHANGES.txt LICENSE
+recursive-include requirements *.txt
+recursive-include {{ cookiecutter.project_name }}
+exclude requirements/test.txt
+prune tests

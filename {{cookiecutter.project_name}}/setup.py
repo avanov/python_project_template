@@ -1,44 +1,37 @@
-import os
-import sys
-
+from pathlib import Path
 from setuptools import setup
 from setuptools import find_packages
-from setuptools.command.test import test as TestCommand
 
 
-here = lambda path: os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+here = Path(__file__).absolute().parent
 
-with open(here('README.rst')) as f:
+
+EXTRAS = frozenset({
+    'third_party',
+})
+
+
+def extras_require(all_extras=EXTRAS):
+    """ Get map of all extra requirements
+    """
+    return {
+        x: requirements(here / 'requirements' / 'extras' / f'{x}.txt') for x in all_extras
+    }
+
+
+def requirements(at_path: Path):
+    with at_path.open() as f:
+        rows = f.read().strip().split('\n')
+        requires = []
+        for row in rows:
+            row = row.strip()
+            if row and not (row.startswith('#') or row.startswith('http')):
+                requires.append(row)
+    return requires
+
+
+with (here / 'README.rst').open() as f:
     README = f.read()
-
-with open(here('requirements.txt')) as f:
-    rows = f.read().strip().split('\n')
-    requires = []
-    for row in rows:
-        row = row.strip()
-        if row and not (row.startswith('#') or row.startswith('http')):
-            requires.append(row)
-
-
-# Additional Hooks
-# ----------------------------
-# Integrate py.test with setup.py:
-# http://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands
-
-
-
-class PyTest(TestCommand):
-
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        # import here, cause outside the eggs aren't loaded
-        import pytest
-        errno = pytest.main(self.test_args)
-        sys.exit(errno)
 
 
 # Setup
@@ -56,22 +49,21 @@ setup(name='{{ cookiecutter.project_name }}',
           'Programming Language :: Python',
           'Programming Language :: Python :: 3',
           'Operating System :: POSIX',
-          'Topic :: Internet :: WWW/HTTP',
-          'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
       ],
       author='{{ cookiecutter.author }}',
       author_email='{{ cookiecutter.author_email }}',
       url='{{ cookiecutter.project_url }}',
-      keywords='web wsgi pylons pyramid',
-      packages=find_packages(),
+      keywords='utils typing json yaml serialization deserialization structured-data',
+      packages=find_packages(exclude=['tests', 'tests.*']),
       include_package_data=True,
       zip_safe=False,
       test_suite='tests',
       tests_require=['pytest', 'coverage'],
-      install_requires=requires,
-      cmdclass={
-          'test': PyTest,
-      },
+      install_requires=requirements(here / 'requirements' / 'minimal.txt'),
+      extras_require=extras_require(),
       entry_points={
+          'console_scripts': [
+              '{{ cookiecutter.project_name }} = {{ cookiecutter.project_name }}.cli:main'
+          ],
       }
-    )
+      )
