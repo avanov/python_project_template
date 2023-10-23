@@ -1,10 +1,7 @@
+# test requirements
 -r ./minimal.txt
 pytest>=7.1,<7.3
 coverage>=6.4,<7.3
 coveralls>=3.3,<3.4
 pytest-cov>=3.0,<4.1
 mypy==0.961
-py-money==0.5.0
-requests>=2.28
-vcrpy>=4.0.2
-openapi-type>=0.0.5

@@ -1,2 +1,1 @@
-# Third-party requirements that typeit uses in CLI
-PyYAML>=6,<6.1
+# Third-party requirements
