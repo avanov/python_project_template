@@ -12,7 +12,7 @@ let
 
     # Make a new "derivation" that represents our shell
     devEnv = pkgs.mkShellNoCC {
-        name = "typeit";
+        name = "{{ cookiecutter.project_name }}";
 
         # The packages in the `buildInputs` list will be added to the PATH in our shell
         # Python-specific guide:
